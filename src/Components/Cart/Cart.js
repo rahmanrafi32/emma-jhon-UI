@@ -6,12 +6,14 @@ const Cart = (props) => {
     const totalPrice = cart.reduce((total,prod) =>total+prod.price ,0)
     const tax = totalPrice*.1;
     return (
-        <div>
+        <div className ='cart-items'>
             <h1>Order summary</h1>
-            <h3>Total items: {cart.length}</h3>
-             {
-                cart.map(price => <h3>Item price:{price.price}</h3>)
-             }
+            <h4>Total items: {cart.length}</h4>
+            <ol>
+                {
+                    cart.map(price => <li>Item price:{price.price}</li>)
+                }
+            </ol>
             <p>Tax: {tax}</p>
             <h4>Total Cost: {totalPrice}</h4>
         </div>
