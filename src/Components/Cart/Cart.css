@@ -1,3 +1,9 @@
 .cart-items {
   text-align: center;
 }
+button {
+  width: 150px;
+  background-color: rgb(228, 172, 20);
+  height: 30px;
+  border-radius: 5px;
+}

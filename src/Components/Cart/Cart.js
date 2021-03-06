@@ -1,9 +1,10 @@
 import React from 'react';
 import './Cart.css';
 
+
 const Cart = (props) => {
     const cart = props.cart
-    const totalPrice = cart.reduce((total,prod) =>total+prod.price ,0)
+    const totalPrice = cart.reduce((total,prod) =>(total+prod.price)*prod.quantity ,0);
     const tax = totalPrice*.1;
     return (
         <div className ='cart-items'>
@@ -16,6 +17,8 @@ const Cart = (props) => {
             </ol>
             <p>Tax: {tax}</p>
             <h4>Total Cost: {totalPrice}</h4>
+            <br/>
+            {props.children/*setting button with child component*/}  
         </div>
     );
 };
