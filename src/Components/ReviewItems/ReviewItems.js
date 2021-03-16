@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import fakeData from '../../fakeData';
-import { getDatabaseCart, processOrder, removeFromDatabaseCart } from '../../utilities/databaseManager';
+import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager';
 import Cart from '../Cart/Cart';
 import Review from '../Review/Review';
 import './ReviewItems.css';
@@ -8,9 +9,9 @@ import './ReviewItems.css';
 const ReviewItems = () => {
     const [cart,setCart] = useState([])//to set products in the cart
 
-    const placeOrder = () =>{//removing review items from cart and review component
-        setCart([]);
-        processOrder();
+    const history = useHistory()
+    const proceedOrder = () =>{
+        history.push(`/shipment`)
     }
     const removeProduct = (productKey => { //click function to remove product from review
         const newCart = cart.filter(prod=>prod.key != productKey)//creating new cart for the items that remain after removing an item
@@ -37,7 +38,7 @@ const ReviewItems = () => {
                 }
             </div>
             <div className='cart'>
-                <Cart cart={cart}><button onClick={placeOrder} className='main-button'>Place Order</button></Cart>
+                <Cart cart={cart}><button onClick={proceedOrder} className='main-button'>Proceed Order</button></Cart>
             </div>
         </div>
     );
