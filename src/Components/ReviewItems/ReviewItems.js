@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import fakeData from '../../fakeData';
 import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager';
 import Cart from '../Cart/Cart';
 import Review from '../Review/Review';
@@ -22,13 +21,14 @@ const ReviewItems = () => {
     useEffect(()=>{
         const saveCart = getDatabaseCart(); //getting data from local storage 
         const productKeys = Object.keys(saveCart);//getting the product keys 
-
-        const cartProducts = productKeys.map(key=>{ //maping the product key from saveCarts and matching the keys with product keys of fakeData.
-            const  product = fakeData.find(prod => prod.key===key);
-            product.quantity = saveCart[key]; //setting the quantity of selected product
-            return product;
-        }) 
-        setCart(cartProducts);
+        
+        fetch('https://hidden-fortress-20462.herokuapp.com/productsByKyes',{
+            method: 'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(productKeys)
+        })
+        .then(res=> res.json())
+        .then(data=>setCart(data));
     },[])
     return (
         <div className='main-reviewContainer'>

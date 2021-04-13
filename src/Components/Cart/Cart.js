@@ -4,7 +4,7 @@ import './Cart.css';
 
 const Cart = (props) => {
     const cart = props.cart
-    const totalPrice = cart.reduce((total,prod) =>(total+prod.price)*prod.quantity ,0);
+    const totalPrice = cart.reduce((total,prod) =>(total+prod.price)*(prod.quantity||1) ,0);
     const tax = totalPrice*.1;
     return (
         <div className ='cart-items'>

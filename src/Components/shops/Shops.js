@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import fakeData from '../../fakeData';
 import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseManager';
 import Cart from '../Cart/Cart';
 import Products from '../Products/Products';
 import './Shops.css';
 
 const Shops = () => {
-   const data = fakeData.slice(0,10);
-   const [products, setProduct] = useState(data);
+//    const data = fakeData.slice(0,10);
+   const [products, setProduct] = useState([]);
+
+   useEffect(()=>{
+        fetch('https://hidden-fortress-20462.herokuapp.com/products')
+        .then(res=>res.json())
+        .then(data=> setProduct(data))
+   },[])
    
    const [cart,setCart]=useState([])
    
@@ -30,16 +35,18 @@ const Shops = () => {
         addToDatabaseCart(product.key,count) //adding productKey to local storage
    }
    
-   useEffect(()=>{
-        const saveCart = getDatabaseCart();
-        const prodKey = Object.keys(saveCart);
-        const previousCart= prodKey.map(existingKey=>{
-           const product = fakeData.find(prodKey=>prodKey.key===existingKey);
-           product.quantity = saveCart[existingKey]
-           return product;
+    useEffect(()=>{
+        const saveCart = getDatabaseCart(); //getting data from local storage 
+        const productKeys = Object.keys(saveCart);//getting the product keys 
+        
+        fetch('https://hidden-fortress-20462.herokuapp.com/productsByKyes',{
+            method: 'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify(productKeys)
         })
-        setCart(previousCart);
-   },[])
+        .then(res=> res.json())
+        .then(data=>setCart(data));
+    },[])
     return (
         <div className ='shop-container'>
             <div className ='product-container'>
